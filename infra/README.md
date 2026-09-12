@@ -1,11 +1,37 @@
 # infra
 
-Plain AWS CLI, not Terraform — deliberate for this project's tactical/weekend
-scope (a handful of resources: one S3 bucket, one IAM role, one Bedrock
-Knowledge Base + S3 Vectors index). The K8s portfolio project uses Terraform
-because it's a multi-stage, many-resource build; introducing Terraform state
-management here would be disproportionate. Every command below is
-reproducible and was actually run to provision this project's AWS resources.
+Mixed approach, decided 2026-09-11 after actually testing the alternatives
+in this environment rather than assuming:
+
+- **S3 raw-zone bucket + IAM role**: plain AWS CLI (below). Created first,
+  before the IaC question came up.
+- **S3 Vectors bucket/index + Bedrock Knowledge Base + data source**:
+  CloudFormation (`knowledge-base.yaml`). Chosen after checking:
+  - **Terraform** is installed (`/snap/bin/terraform`) but broken in this
+    sandbox: `snap-confine` lacks a required capability under this WSL2
+    setup. The K8s portfolio project's `terraform validate`/apply actually
+    run in GitHub Actions CI, not locally — so "same pattern as K8s" doesn't
+    mean this session could run it here.
+  - **CDK** is also broken locally: no `node` binary reachable from this
+    bash session (the Windows-side npm/cdk install under `/mnt/c/...` isn't
+    on this PATH), and `npx aws-cdk` fails with a misleading WSL1 error.
+  - **CloudFormation** works today — it's pure `aws cloudformation` API
+    calls, same execution path already proven throughout this project — and
+    a schema check (`aws cloudformation describe-type`) confirmed native,
+    first-class support for every resource type needed:
+    `AWS::S3Vectors::VectorBucket`, `AWS::S3Vectors::Index`, and
+    `AWS::Bedrock::KnowledgeBase` with `S3VectorsConfiguration`. No custom
+    resources needed.
+
+  Given only ~4-5 resources total for the whole project, this isn't an
+  argument that CloudFormation/Terraform "should" be used at this scale in
+  general — it's specific to this environment's tooling breakage plus the
+  fact that CFN's teardown story (`aws cloudformation delete-stack`) is
+  genuinely convenient for the cost-discipline narrative once you're
+  writing a template anyway.
+
+Every command below is reproducible and was actually run to provision this
+project's AWS resources.
 
 ## Account / region
 

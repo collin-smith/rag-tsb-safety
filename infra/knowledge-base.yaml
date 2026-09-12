@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  rag-tsb-safety: S3 Vectors store + Bedrock Knowledge Base over the TSB
+  report manifest. Deliberately does NOT include the S3 raw-zone bucket or
+  the KB execution IAM role, which already exist (created directly via AWS
+  CLI, see infra/README.md) -- this stack only covers the pieces that are
+  genuinely new. Chose S3 Vectors over the default OpenSearch Serverless
+  vector store specifically because it has no idle/standing cost (see
+  CLAUDE.md "Cost gotcha" section).
+
+Parameters:
+  KnowledgeBaseExecutionRoleArn:
+    Type: String
+    Description: >
+      ARN of the existing Bedrock KB execution role
+      (AmazonBedrockExecutionRoleForKB-rag-tsb-safety), created via CLI.
+    Default: arn:aws:iam::805068224035:role/AmazonBedrockExecutionRoleForKB-rag-tsb-safety
+
+  RawZoneBucketArn:
+    Type: String
+    Description: ARN of the existing S3 raw-zone bucket, created via CLI.
+    Default: arn:aws:s3:::rag-tsb-safety-raw-805068224035
+
+  EmbeddingModelArn:
+    Type: String
+    Description: Titan Embeddings V2 foundation model ARN (us-east-1).
+    Default: arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0
+
+  EmbeddingDimension:
+    Type: Number
+    Description: Must match the embedding model's output dimension (Titan Embed V2 default 1024).
+    Default: 1024
+
+Resources:
+  VectorBucket:
+    Type: AWS::S3Vectors::VectorBucket
+    Properties:
+      VectorBucketName: rag-tsb-safety-vectors
+      EncryptionConfiguration:
+        SseType: AES256
+
+  VectorIndex:
+    Type: AWS::S3Vectors::Index
+    Properties:
+      VectorBucketArn: !Ref VectorBucket
+      IndexName: reports-index
+      DataType: float32
+      Dimension: !Ref EmbeddingDimension
+      DistanceMetric: cosine
+
+  KnowledgeBase:
+    Type: AWS::Bedrock::KnowledgeBase
+    Properties:
+      Name: rag-tsb-safety-kb
+      Description: >
+        RAG knowledge base over 24 curated TSB rail + pipeline investigation
+        reports. See ../manifest/README.md for report selection rationale.
+      RoleArn: !Ref KnowledgeBaseExecutionRoleArn
+      KnowledgeBaseConfiguration:
+        Type: VECTOR
+        VectorKnowledgeBaseConfiguration:
+          EmbeddingModelArn: !Ref EmbeddingModelArn
+      StorageConfiguration:
+        Type: S3_VECTORS
+        S3VectorsConfiguration:
+          IndexArn: !GetAtt VectorIndex.IndexArn
+      Tags:
+        project: rag-tsb-safety
+
+  DataSource:
+    Type: AWS::Bedrock::DataSource
+    Properties:
+      KnowledgeBaseId: !Ref KnowledgeBase
+      Name: rag-tsb-safety-reports
+      Description: TSB report text files uploaded by scripts/ingest_reports.py.
+      DataSourceConfiguration:
+        Type: S3
+        S3Configuration:
+          BucketArn: !Ref RawZoneBucketArn
+          InclusionPrefixes:
+            - reports/
+      VectorIngestionConfiguration:
+        ChunkingConfiguration:
+          ChunkingStrategy: FIXED_SIZE
+          FixedSizeChunkingConfiguration:
+            MaxTokens: 300
+            OverlapPercentage: 20
+      DataDeletionPolicy: DELETE
+
+Outputs:
+  KnowledgeBaseId:
+    Value: !Ref KnowledgeBase
+  KnowledgeBaseArn:
+    Value: !GetAtt KnowledgeBase.KnowledgeBaseArn
+  DataSourceId:
+    Value: !GetAtt DataSource.DataSourceId
+  VectorBucketArn:
+    Value: !GetAtt VectorBucket.VectorBucketArn
+  VectorIndexArn:
+    Value: !GetAtt VectorIndex.IndexArn
