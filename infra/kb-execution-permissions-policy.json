@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3ReadRawZone",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::rag-tsb-safety-raw-805068224035",
+        "arn:aws:s3:::rag-tsb-safety-raw-805068224035/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceAccount": "805068224035"
+        }
+      }
+    },
+    {
+      "Sid": "BedrockInvokeEmbeddingModel",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel"
+      ],
+      "Resource": [
+        "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0"
+      ]
+    },
+    {
+      "Sid": "S3VectorsAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3vectors:GetIndex",
+        "s3vectors:PutVectors",
+        "s3vectors:GetVectors",
+        "s3vectors:QueryVectors",
+        "s3vectors:DeleteVectors",
+        "s3vectors:ListVectors"
+      ],
+      "Resource": [
+        "arn:aws:s3vectors:us-east-1:805068224035:bucket/rag-tsb-safety-vectors",
+        "arn:aws:s3vectors:us-east-1:805068224035:bucket/rag-tsb-safety-vectors/index/*"
+      ]
+    }
+  ]
+}

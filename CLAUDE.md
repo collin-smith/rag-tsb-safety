@@ -81,12 +81,16 @@ strategic "RAG from scratch" stage, not this build):
 - **Ingestion:** curated report set (HTML/PDF) → S3 raw zone.
 - **Bedrock Knowledge Base** (fully managed): handles chunking, embeddings
   (Titan Embeddings), and vector storage.
-  - **Cost gotcha — check before provisioning:** Bedrock KB's default vector
-    store (OpenSearch Serverless) has a standing minimum-capacity cost that
-    accrues even at rest — classic weekend bill-shock. Check whether Amazon
-    S3 Vectors is now a supported KB vector store (no idle cost) before
-    defaulting to OpenSearch Serverless. Otherwise, tear the vector store
-    down immediately after the demo/article is captured.
+  - **Cost gotcha — resolved 2026-09-11.** Confirmed via `aws bedrock-agent
+    create-knowledge-base help` and a live `aws s3vectors list-vector-buckets`
+    call in this account/region (us-east-1): **`S3_VECTORS` is a supported
+    Knowledge Base storage-configuration type**, alongside
+    `OPENSEARCH_SERVERLESS`. S3 Vectors has no standing/idle capacity cost
+    (pay per vector stored + per query) — use it instead of OpenSearch
+    Serverless (which bills a minimum OCU baseline even at rest) and there's
+    no weekend-bill-shock risk to manage in the first place. No need to plan
+    an urgent teardown of the vector store specifically; still tear down
+    everything not needed for future demos per step 10.
 - **Query/generation:** Bedrock Converse API against the Knowledge Base, with
   source attribution surfaced in every answer — this is the single most
   important thing to demo well, since "which report did this answer come
