@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+
+# AWS / credentials
+.aws/
+*.pem
+
+# Editor / OS
+.DS_Store
+.vscode/
+
+# Claude Code
+.claude/.cc-writes/
+
+# Data (raw report downloads — don't commit large PDFs/HTML to git)
+data/raw/
