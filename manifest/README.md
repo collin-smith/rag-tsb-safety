@@ -49,8 +49,30 @@ All 24 URLs were spot-checked with `curl` and return HTTP 200.
 the source data, and not something to feed into the Knowledge Base ingestion
 metadata.
 
-## Licensing
+## Licensing — confirmed 2026-09-11
 
-Not yet confirmed — see kickoff checklist step 3. Do not scrape/ingest the
-report HTML/PDF content until TSB's own page terms (not just the
-open.canada.ca mirror's default Open Government Licence) are checked.
+TSB's own site terms (`tsb.gc.ca/eng/avis-notices/avis-notices.html`) govern,
+not the open.canada.ca mirror's Open Government Licence. Non-commercial
+reproduction is permitted with attribution (title, TSB as author, and a note
+that it's a copy of the version at the source URL) — commercial
+redistribution needs PWGSC permission. See `../CLAUDE.md` for the full
+finding, including the statutory no-fault/non-binding caveat worth
+mentioning in the article.
+
+## Full report URL vs. overview URL
+
+The `url` column here is whatever the index page linked to. Two patterns
+exist:
+
+- `/eng/enquetes-investigations/{mode}/{year}/{id}/{id}.html` — an overview
+  page (occurrence summary + recommendations) that links onward to the full
+  report via a "View final report" button.
+- `/eng/rapports-reports/{mode}/{year}/{id}/{id}.html` — the full
+  investigation report text. Older reports (pre-~2010, e.g. P07H0014,
+  P12H0105 in this manifest) link directly to this page with no separate
+  overview page.
+
+Confirmed by sampling 4 reports (2 rail, 2 pipeline; old + new): swapping
+`enquetes-investigations` → `rapports-reports` in an overview URL reliably
+yields that report's full-report URL. Ingestion (checklist step 6) should
+fetch the full-report page, not just the overview page.

@@ -39,11 +39,31 @@ conversation-starter with those employers, not just portfolio filler.
   (`open.canada.ca/data`), one dataset entry per report.
 - No confirmed bulk-download API — plan on scripted fetch of a curated list
   of report URLs, not a bulk archive pull.
-- **Licensing — verify before publishing derivative content.** Government of
-  Canada open-data portals default to the Open Government Licence – Canada
-  (permissive), but confirm the licence actually attached to TSB's own report
-  pages (vs. the open.canada.ca mirror) before quoting or excerpting report
-  text in the published article.
+- **Licensing — confirmed 2026-09-11.** TSB's own site (`tsb.gc.ca/eng/avis-notices/avis-notices.html`,
+  "Ownership and use of content") is Crown copyright under the standard
+  Government of Canada **non-commercial reproduction** terms — **not** the
+  more permissive Open Government Licence – Canada that the open.canada.ca
+  mirror defaults to. This does affect what's safe: reproduce/quote report
+  text freely for non-commercial use provided you (1) exercise due diligence
+  on accuracy, (2) cite the complete title and author (TSB) of the material
+  reproduced, and (3) note that the reproduction is a copy of the version at
+  the source URL. Commercial redistribution requires written permission from
+  PWGSC. A personal, non-monetized portfolio article satisfies
+  non-commercial use; give each cited excerpt an inline "Source: TSB report
+  [ID], [URL]" attribution. Individual report pages carry no report-specific
+  copyright notice beyond this site-wide policy (checked on R13D0054).
+  Also worth an honest-boundary callout in the article: by statute (CTAISB
+  Act 7(3)–7(4)) TSB findings assign no fault/liability and aren't binding
+  in legal proceedings — the reports are safety analysis, not adjudication.
+- **URL structure — confirmed 2026-09-11.** Each report has two related
+  pages: an `/eng/enquetes-investigations/{mode}/{year}/{id}/{id}.html`
+  overview page (occurrence summary, safety communications, recommendations)
+  that links to an `/eng/rapports-reports/{mode}/{year}/{id}/{id}.html` full
+  report page (the actual investigation report text — this is what
+  ingestion should fetch). Older reports (pre-~2010) only have the
+  `rapports-reports` page; the manifest's `url` column points at whichever
+  page the index itself linked to, so check which pattern applies per row
+  before scripting the ingestion fetch.
 
 **Scope cut (keep it tactical):** don't ingest the full archive. Pick a
 bounded, curated subset — 15–30 reports across rail + pipeline, weighted
