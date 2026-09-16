@@ -106,7 +106,7 @@ def diagram1():
                      size=10, color="#444", anchor="middle"))
 
     svg.append(rect(640, 40, 300, 260, "none", CLOUD_NAVY, stroke_width=2))
-    svg.append(text(655, 65, "AWS Cloud (us-east-1)", size=13, weight="700", color=CLOUD_NAVY))
+    svg.append(text(655, 65, "AWS Cloud (ca-central-1)", size=13, weight="700", color=CLOUD_NAVY))
 
     svg.append(aws_icon(680, 100, 78, 78, "S3 raw zone\nrag-tsb-safety-raw-...\nreports/{mode}/{id}.txt", "storage"))
     svg.append(aws_icon(800, 100, 78, 78, "IAM role\nKB execution\n(used in Phase 2)", "security"))
@@ -170,11 +170,11 @@ def diagram3():
                      size=9, color="#444", anchor="middle"))
 
     svg.append(rect(260, 30, 720, 500, "none", CLOUD_NAVY, stroke_width=2))
-    svg.append(text(275, 55, "AWS Cloud (us-east-1) -- no VPC", size=13, weight="700", color=CLOUD_NAVY))
+    svg.append(text(275, 55, "AWS Cloud (ca-central-1) -- no VPC", size=13, weight="700", color=CLOUD_NAVY))
 
     svg.append(aws_icon(280, 60, 60, 60, "S3 raw zone\n(reused)", "storage"))
     svg.append(aws_icon(280, 450, 55, 55, "IAM role\n(reused)", "security"))
-    svg.append(aws_icon(440, 220, 110, 95, "Bedrock Knowledge Base\nretrieve (report_id filter) +\nretrieve_and_generate (mode filter)", "ml"))
+    svg.append(aws_icon(440, 220, 110, 95, "Bedrock Knowledge Base\nZ3Q6F4RTPY\nretrieve() -- not retrieve_and_generate", "ml"))
     svg.append(aws_icon(640, 60, 60, 60, "S3 Vectors\n(reused)", "storage"))
     svg.append(aws_icon(640, 210, 90, 80, "Nova Lite\nextraction\n(1 call/report)", "ml"))
     svg.append(aws_icon(800, 360, 110, 90, "Nova Lite\ntool-use router\n(picks aggregate\nvs. semantic tool)", "ml"))
@@ -207,7 +207,7 @@ def diagram4():
                      size=9, color="#333", anchor="middle"))
 
     svg.append(rect(20, 30, 520, 280, "none", CLOUD_NAVY, stroke_width=2))
-    svg.append(text(35, 55, "AWS Cloud (us-east-1) -- no VPC, reused from Phases 1-3", size=12, weight="700", color=CLOUD_NAVY))
+    svg.append(text(35, 55, "AWS Cloud (ca-central-1) -- no VPC, reused from Phases 1-3", size=12, weight="700", color=CLOUD_NAVY))
 
     svg.append(aws_icon(40, 80, 60, 60, "S3 raw zone\n57 TSB reports", "storage"))
     svg.append(aws_icon(40, 220, 60, 60, "S3 Vectors\nreports-index", "storage"))
@@ -233,7 +233,7 @@ def diagram5():
                      size=11, weight="700", color=CLOUD_NAVY, anchor="start"))
 
     svg.append(rect(20, 50, 470, 200, "none", CLOUD_NAVY, stroke_width=2))
-    svg.append(text(35, 70, "AWS Cloud (us-east-1) -- built, Phases 1-3", size=12, weight="700", color=CLOUD_NAVY))
+    svg.append(text(35, 70, "AWS Cloud (ca-central-1) -- built, Phases 1-3", size=12, weight="700", color=CLOUD_NAVY))
 
     svg.append(aws_icon(40, 90, 60, 60, "S3 raw zone\n+ manifest", "storage"))
     svg.append(aws_icon(40, 190, 60, 60, "S3 Vectors", "storage"))
