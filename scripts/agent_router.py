@@ -277,7 +277,16 @@ def main():
     total_in, total_out = 0, 0
     for q in questions:
         print(f"\n{'=' * 80}\nQ: {q}")
-        r = ask(bedrock_runtime, agent_runtime, mode_map, findings, q)
+        try:
+            r = ask(bedrock_runtime, agent_runtime, mode_map, findings, q)
+        except ClientError as e:
+            # converse_with_retry already retried once at a bumped
+            # temperature; a ClientError surfacing here means that retry
+            # didn't clear it. Record the failure and keep going rather
+            # than losing every remaining question to one bad routing call.
+            print(f"  -> ROUTING FAILED after retry: {e}")
+            r = {"question": q, "final_answer": None, "tool_calls": [],
+                 "input_tokens": 0, "output_tokens": 0, "error": str(e)}
         for tc in r["tool_calls"]:
             print(f"  -> tool: {tc['tool']}({tc['input']})")
         print(f"A: {r['final_answer']}")
