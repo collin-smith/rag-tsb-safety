@@ -91,16 +91,45 @@ strategic "RAG from scratch" stage, not this build):
     no weekend-bill-shock risk to manage in the first place. No need to plan
     an urgent teardown of the vector store specifically; still tear down
     everything not needed for future demos per step 10.
-- **Query/generation:** Bedrock Converse API against the Knowledge Base, with
-  source attribution surfaced in every answer — this is the single most
-  important thing to demo well, since "which report did this answer come
-  from" is the credibility signal that makes RAG different from an
-  ungrounded chat response.
-- **Demo/eval:** a short script or notebook asking real questions ("what
-  type of track defects caused the most incidents in this set," "what
-  corrective actions were recommended after X") and showing grounded, cited
-  answers — this is the artifact worth screenshotting for the article and
-  for interview show-and-tell.
+- **Region — migrated to `ca-central-1` 2026-09-16, data residency.**
+  TSB is a Canadian federal body; the build originally ran in `us-east-1`.
+  Both halves of the residency gap are now closed: Titan Embeddings V2
+  supports on-demand invocation directly in `ca-central-1`, and Amazon
+  Nova Lite now has a genuine all-Canada geographic inference profile
+  (`ca.amazon.nova-lite-v1:0`, shipped 2025-09-25 — routes to
+  `ca-central-1`/`ca-west-1` only, not the US/Global routing it had when
+  this file was first written). Verified independently via CloudTrail
+  (`awsRegion: ca-central-1` on every call). `us-east-1` resources torn
+  down after migration; see `infra/README.md`'s migration section for the
+  full account of what was checked and how.
+- **Query/generation:** explicit `retrieve()` + `converse()` calls
+  (`rag_utils.verified_retrieve_and_generate`), **not** Bedrock's
+  `retrieve_and_generate` convenience API — retired 2026-09-16 after it
+  was found to silently disconnect from the KB's own `retrieve()` results
+  on the `ca-central-1` KB specifically (see `rag_utils.py`'s docstring
+  for the full isolation process). Source attribution surfaced in every
+  answer is still the single most important thing to demo well, since
+  "which report did this answer come from" is the credibility signal that
+  makes RAG different from an ungrounded chat response — this bug was a
+  sharper version of exactly that concern, not a side issue.
+  - **Generation model — Amazon Nova Lite, not Claude, decided 2026-09-12.**
+    Bedrock started requiring a one-time "model use case details" form for
+    Anthropic models on this account partway through the build (a new,
+    account-level gate — even a previously-working direct Converse call to
+    Claude Haiku started failing the same way). That form needs the account
+    owner's own business/use-case details, so rather than block on it or
+    fill it out with guessed content, generation uses Nova Lite instead —
+    already unblocked, and retrieval quality (the actual RAG mechanism)
+    doesn't depend on which model does generation.
+- **Demo/eval — built 2026-09-12, see `demo/`.** `scripts/demo.py` asks 5
+  real questions (including CPKC- and Trans Mountain-specific ones tied to
+  the job-search threads) plus one deliberately ambiguous query run twice
+  (unfiltered, then fixed). See `demo/README.md` for the full writeup — in
+  short: plain vector similarity has no concept of recency, so "what was
+  the most recent incident" returned a different wrong (old) report on
+  each unfiltered run; adding a `date_numeric` metadata attribute at
+  ingestion (`scripts/build_metadata_sidecars.py`) and filtering on it
+  fixed it reliably. This is the strongest article beat 4 candidate.
 - **Cost governance:** a small, disclosed cost cap/estimate for the build,
   stated plainly in the article. Same discipline as this author's other
   portfolio projects (camera project, K8s series) — never leave metered
@@ -108,9 +137,23 @@ strategic "RAG from scratch" stage, not this build):
 
 ## Storyline / article framing
 
-One teaching article (tactical scope — not a multi-stage series): working
-angle **"What actually caused it — building my first RAG pipeline over
-Canada's rail and pipeline safety investigations."**
+**Decided 2026-09-12: two staged articles**, not one combined piece —
+matching the EKS GitOps series' per-stage format, and leaving room for an
+optional future "Stage 3 — agentic" if that's ever pursued (not committed).
+Working angle **"What actually caused it — building my first RAG pipeline
+over Canada's rail and pipeline safety investigations."**
+
+- **Stage 1 — The Corpus & the Question**: dataset selection rationale,
+  the licensing discovery (Crown copyright vs. the more permissive Open
+  Government Licence), ingestion. ~700–900 words — thinner on its own, but
+  the licensing angle can carry it as a standalone hook.
+- **Stage 2 — The Pipeline**: Knowledge Base + S3 Vectors (including the
+  cost-gotcha avoidance and the real ingestion debugging saga — a
+  non-filterable-metadata bug, not the throttling it first looked like),
+  the demo, the weak-spot-then-fix beat, honest boundaries, cost receipt.
+  ~1,400–1,800 words — the real meat.
+
+Beats below map roughly 1–2 to Stage 1, 3–6 to Stage 2.
 
 Beats:
 1. The hook — root-cause investigation reports as a naturally RAG-shaped

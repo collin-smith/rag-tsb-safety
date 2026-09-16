@@ -12,7 +12,7 @@
           "aws:SourceAccount": "805068224035"
         },
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:bedrock:us-east-1:805068224035:knowledge-base/*"
+          "aws:SourceArn": "arn:aws:bedrock:ca-central-1:805068224035:knowledge-base/*"
         }
       }
     }

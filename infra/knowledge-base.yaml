@@ -19,12 +19,15 @@ Parameters:
   RawZoneBucketArn:
     Type: String
     Description: ARN of the existing S3 raw-zone bucket, created via CLI.
-    Default: arn:aws:s3:::rag-tsb-safety-raw-805068224035
+    Default: arn:aws:s3:::rag-tsb-safety-raw-ca-805068224035
 
   EmbeddingModelArn:
     Type: String
-    Description: Titan Embeddings V2 foundation model ARN (us-east-1).
-    Default: arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0
+    Description: >
+      Titan Embeddings V2 foundation model ARN. On-demand invocation is
+      supported directly in ca-central-1 (confirmed 2026-09-15) -- no
+      inference profile needed for embeddings, unlike generation below.
+    Default: arn:aws:bedrock:ca-central-1::foundation-model/amazon.titan-embed-text-v2:0
 
   EmbeddingDimension:
     Type: Number
@@ -47,14 +50,30 @@ Resources:
       DataType: float32
       Dimension: !Ref EmbeddingDimension
       DistanceMetric: cosine
+      MetadataConfiguration:
+        # Required for Bedrock KB use, and immutable after index creation.
+        # Bedrock writes each chunk's full text into the reserved
+        # AMAZON_BEDROCK_TEXT metadata key; if it isn't declared
+        # non-filterable, that key counts against the (small) filterable
+        # metadata size limit and every document write fails once a chunk's
+        # text exceeds it -- this is what caused every ingestion attempt
+        # tonight to fail (not throttling, though that was a real, separate
+        # issue too -- see the Titan Embeddings quota note above).
+        NonFilterableMetadataKeys:
+          - AMAZON_BEDROCK_TEXT
+          - AMAZON_BEDROCK_METADATA
 
   KnowledgeBase:
     Type: AWS::Bedrock::KnowledgeBase
     Properties:
       Name: rag-tsb-safety-kb
       Description: >
-        RAG knowledge base over 24 curated TSB rail + pipeline investigation
-        reports. See ../manifest/README.md for report selection rationale.
+        RAG knowledge base over TSB rail/pipeline/marine/aviation
+        investigation reports: 57 curated reports (see
+        ../manifest/README.md for selection rationale) plus a 313-report
+        stratified validation sample (see ../scripts/build_validation_sample.py).
+        Migrated to ca-central-1 2026-09-15 for data residency -- see
+        CLAUDE.md.
       RoleArn: !Ref KnowledgeBaseExecutionRoleArn
       KnowledgeBaseConfiguration:
         Type: VECTOR
@@ -83,8 +102,17 @@ Resources:
         ChunkingConfiguration:
           ChunkingStrategy: FIXED_SIZE
           FixedSizeChunkingConfiguration:
-            MaxTokens: 300
-            OverlapPercentage: 20
+            # Larger than the console-typical 300/20 default: this account's
+            # Titan Embed V2 on-demand quota is a hard, non-adjustable 60
+            # requests/minute (confirmed via `aws service-quotas
+            # list-service-quotas --service-code bedrock`), and 300-token
+            # chunks across 24 reports produced enough embedding calls to
+            # throttle 22/24 documents into FAILED on the first ingestion
+            # attempt. Fewer, larger chunks cuts total embedding calls
+            # roughly proportionally, keeping the whole corpus's ingestion
+            # burst under that ceiling.
+            MaxTokens: 1500
+            OverlapPercentage: 10
       DataDeletionPolicy: DELETE
 
 Outputs:

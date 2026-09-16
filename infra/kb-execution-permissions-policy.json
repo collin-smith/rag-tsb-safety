@@ -9,8 +9,8 @@
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::rag-tsb-safety-raw-805068224035",
-        "arn:aws:s3:::rag-tsb-safety-raw-805068224035/*"
+        "arn:aws:s3:::rag-tsb-safety-raw-ca-805068224035",
+        "arn:aws:s3:::rag-tsb-safety-raw-ca-805068224035/*"
       ],
       "Condition": {
         "StringEquals": {
@@ -25,7 +25,7 @@
         "bedrock:InvokeModel"
       ],
       "Resource": [
-        "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0"
+        "arn:aws:bedrock:ca-central-1::foundation-model/amazon.titan-embed-text-v2:0"
       ]
     },
     {
@@ -40,8 +40,8 @@
         "s3vectors:ListVectors"
       ],
       "Resource": [
-        "arn:aws:s3vectors:us-east-1:805068224035:bucket/rag-tsb-safety-vectors",
-        "arn:aws:s3vectors:us-east-1:805068224035:bucket/rag-tsb-safety-vectors/index/*"
+        "arn:aws:s3vectors:ca-central-1:805068224035:bucket/rag-tsb-safety-vectors",
+        "arn:aws:s3vectors:ca-central-1:805068224035:bucket/rag-tsb-safety-vectors/index/*"
       ]
     }
   ]
