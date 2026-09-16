@@ -14,8 +14,9 @@ venv/
 .DS_Store
 .vscode/
 
-# Claude Code
-.claude/.cc-writes/
+# Claude Code / MCP local config (session-local, not project content)
+.claude/
+.mcp.json
 
 # Data (raw report downloads — don't commit large PDFs/HTML to git)
 data/raw/
