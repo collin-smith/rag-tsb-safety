@@ -25,7 +25,7 @@
   },
   {
     "question": "What caused the Lac-Megantic derailment?",
-    "final_answer": "The Lac-M\u00e9gantic derailment was caused by the train starting to roll downhill toward Lac-M\u00e9gantic, 7.2 miles away, after the air in the train\u2019s brake system began to be depleted. This occurred because the locomotive was shut down and the independent brakes were not sufficient to hold the train in place on the descending grade. This information is grounded and cited from the following reports: R13D0054, R96D0035, R00Q0023, R13W0257, R05Q0033, R04Q0016, R14W0256.",
+    "final_answer": "The Lac-Megantic derailment was caused by the train rolling downhill after the air in the train's brake system began to be depleted, resulting in a reduction in the retarding force holding the train. This occurred because the locomotive was shut down, which removed the fuel source and eliminated a potential ignition source, actions in keeping with railway instructions. With no locomotive running, the air in the train's brake system slowly began to be depleted, resulting in the train starting to roll downhill toward Lac-M\u00e9gantic, 7.2 miles away. At about 0115, the train derailed near the centre of town, releasing about 6 million litres of petroleum crude oil, which resulted in a large fire and multiple explosions. This information is grounded and cited from the following reports: R13D0054, R96D0035, R00Q0023, R13W0257, R05Q0033, R04Q0016, R14W0256.",
     "tool_calls": [
       {
         "tool": "verified_semantic_query",
@@ -35,7 +35,7 @@
         },
         "result": {
           "grounded": true,
-          "answer": "The Lac-M\u00e9gantic derailment was caused by the train starting to roll downhill toward Lac-M\u00e9gantic, 7.2 miles away, after the air in the train\u2019s brake system began to be depleted. This occurred because the locomotive was shut down and the independent brakes were not sufficient to hold the train in place on the descending grade.",
+          "answer": "According to the provided source, the Lac-Megantic derailment was caused by the train rolling downhill after the air in the train's brake system began to be depleted, resulting in a reduction in the retarding force holding the train. This occurred because the locomotive was shut down, which removed the fuel source and eliminated a potential ignition source, actions in keeping with railway instructions. With no locomotive running, the air in the train's brake system slowly began to be depleted, resulting in the train starting to roll downhill toward Lac-M\u00e9gantic, 7.2 miles away. At about 0115, the train derailed near the centre of town, releasing about 6 million litres of petroleum crude oil, which resulted in a large fire and multiple explosions.",
           "distinct_reports_cited": [
             "R13D0054",
             "R96D0035",
@@ -48,8 +48,8 @@
         }
       }
     ],
-    "input_tokens": 1770,
-    "output_tokens": 215
+    "input_tokens": 1855,
+    "output_tokens": 294
   },
   {
     "question": "What fraction of pipeline reports involved dangerous goods?",
