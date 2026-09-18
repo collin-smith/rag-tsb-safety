@@ -53,10 +53,15 @@ Not the original design — the current, migrated, bug-fixed state:
   silently disconnect from the Knowledge Base's own `retrieve()` results
   on this region's KB — a real, reproducible bug, isolated and documented
   in `scripts/rag_utils.py`'s module docstring and `infra/README.md`.
-- **Bedrock Guardrails**, prototyped and tested (not yet wired into the
-  production query path) — a contextual grounding check tested directly
-  against the bug above, a denied-topic policy, and Canada-specific PII
-  anonymization.
+- **Bedrock Guardrails**, wired into the production query path (2026-09-17)
+  via `rag_utils.py`'s two-call pattern — a contextual grounding check
+  tested directly against the bug above, a denied-topic policy, and
+  Canada-specific PII anonymization. Wiring it into every live question
+  (not just Phase 6's isolated tests) immediately surfaced a real false
+  positive: the denied topic blocking a legitimate historical question
+  about the Trans Mountain pipeline release, purely on vocabulary overlap
+  with its sabotage-adjacent scope — see Phase 6's article for the full
+  finding.
 
 ## Status
 

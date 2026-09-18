@@ -15,7 +15,7 @@ import boto3  # noqa: E402
 from extract_structured_findings import extract_one, NOVA_LITE_INPUT_RATE, NOVA_LITE_OUTPUT_RATE  # noqa: E402
 from rag_utils import estimate_cost_usd  # noqa: E402
 
-REGION = "us-east-1"
+REGION = "ca-central-1"
 SAMPLE_MANIFEST = os.path.join(os.environ.get("TMPDIR", "/tmp"), "validation_sample_320.csv")
 UPLOAD_LOG = os.path.join(os.environ.get("TMPDIR", "/tmp"), "validation_ingest_log.jsonl")
 OUT_JSON = os.path.join(os.environ.get("TMPDIR", "/tmp"), "validation_sample_findings.json")

@@ -15,6 +15,7 @@ import subprocess
 import sys
 import time
 
+REGION = "ca-central-1"
 DELAY_BETWEEN_BATCHES = 75  # seconds
 LARGE_DOC_BYTES = 150_000  # ingest solo, one at a time, above this size
 POLL_INTERVAL = 5
@@ -38,7 +39,7 @@ def ingest_batch(kb_id, ds_id, uris):
         "--knowledge-base-id", kb_id,
         "--data-source-id", ds_id,
         "--documents", json.dumps(docs),
-        "--region", "us-east-1",
+        "--region", REGION,
     ])
 
 
@@ -53,7 +54,7 @@ def poll_statuses(kb_id, ds_id, uris):
             "--knowledge-base-id", kb_id,
             "--data-source-id", ds_id,
             "--document-identifiers", json.dumps(idents),
-            "--region", "us-east-1",
+            "--region", REGION,
         ])
         for d in result.get("documentDetails", []):
             uri = d["identifier"]["s3"]["uri"]

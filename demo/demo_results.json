@@ -3,7 +3,7 @@
     "label": "Flagship report / citation quality",
     "question": "What corrective actions were recommended after the Lac-Megantic derailment?",
     "filter": null,
-    "answer": "The provided sources do not contain explicit information on corrective actions recommended after the Lac-Megantic derailment. However, it is mentioned that Transport Canada's planned national railway safety audit program involving risk analysis and intensification of yard inspections may reduce the risks of uncontrolled equipment movement and associated hazards to passengers and railway employees. Additionally, Transport Canada stated that it would intensify its yard inspections across Canada and is developing regulations requiring railways to implement a safety management system against which Transport Canada can audit. The Railway Association of Canada also committed to the development and distribution of an RAC circular of recommended practice governing the safe securement of railway equipment.",
+    "answer": "The provided sources do not contain explicit information about corrective actions recommended after the Lac-M\u00e9gantic derailment. The sources discuss the investigation details, the findings, and the impact of the derailment, but they do not detail any specific corrective actions recommended post-incident.",
     "citations": [
       {
         "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/rail/R13D0054.txt",
@@ -32,13 +32,16 @@
       "R14W0256",
       "R96D0035",
       "R13W0257"
-    ]
+    ],
+    "guardrail_intervened": false,
+    "guardrail_stage": null,
+    "guardrail_message": null
   },
   {
     "label": "Cross-report synthesis",
     "question": "What types of track or equipment defects caused derailments in this set of reports?",
     "filter": null,
-    "answer": "Answer: The types of track or equipment defects that caused derailments in this set of reports are:\n\n1. Broken rail with previously undetected internal defects\n2. Inadequate track geometry maintenance\n3. Undetected roller bearing failures\n4. Worn truck components\n5. Straight-plate wheel failures\n\nThese defects are mentioned in the reports as persistent themes in the factors underlying many of the main track derailments since 1991.",
+    "answer": "The types of track and equipment defects that caused derailments, as identified in these reports, include:\n\n1. **Broken Rail with Previously Undetected Internal Defects**: This includes internal rail defects that were not detected by existing rail defect detection technology, leading to derailments.\n\n2. **Inadequate Track Geometry Maintenance**: Problems with track geometry, such as uneven track surfaces or poor alignment, have contributed to derailments.\n\n3. **Undetected Roller Bearing Failures**: Failures in roller bearings that went undetected by the current hot box detectors (HBDs) have caused derailments. The current spacing of HBDs may be inadequate to detect overheating of roller bearings in a timely manner.\n\n4. **Worn Truck Components**: Wear in truck components, such as those related to the journal box, has led to derailments. This issue has persisted despite recommendations and ongoing efforts to address it.\n\n5. **Straight-Plate Wheel Failures**: The continued use of straight-plate wheels, which are more susceptible to failure than curved-plate wheels, has resulted in derailments. Although efforts are underway to phase out straight-plate wheels, the process is still ongoing.\n\nThese defects highlight the need for improved inspection and maintenance practices, as well as advancements in detection technology to prevent future derailments.",
     "citations": [
       {
         "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/rail/SR9401.txt",
@@ -64,13 +67,16 @@
     "distinct_reports_cited": [
       "SR9401",
       "R96D0035"
-    ]
+    ],
+    "guardrail_intervened": false,
+    "guardrail_stage": null,
+    "guardrail_message": null
   },
   {
     "label": "CPKC relevance",
     "question": "What caused the CPKC crossing collision near Cramahe, Ontario in 2025?",
     "filter": null,
-    "answer": "The CPKC crossing collision near Cramahe, Ontario in 2025 was caused by the vehicle driver's inability to stop the vehicle short of the crossing based on the vehicle's position once the train became visible to the driver, which was approximately 2.2 seconds before the collision. The vehicle's speed of travel was too great to have permitted the driver to stop the vehicle short of the crossing based on the vehicle's position once the train became visible to the driver. The results of the photogrammetric analysis are not consistent with a vehicle preparing to stop short of the crossing.",
+    "answer": "The CPKC crossing collision near Cramahe, Ontario in 2025 was caused by the vehicle driver's failure to stop and clear the railway crossing in time to avoid the collision with the approaching train. The data from the vehicle\u2019s event data recorder and the photogrammetric analysis conducted by the TSB laboratory indicate that the vehicle\u2019s speed of travel was too great to have permitted the driver to stop the vehicle short of the crossing based on the vehicle\u2019s position once the train became visible to the driver (approximately 2.2 seconds before the collision). Furthermore, the results are not consistent with a vehicle preparing to stop short of the crossing.",
     "citations": [
       {
         "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/rail/R25T0177.txt",
@@ -98,46 +104,27 @@
       "R20D0013",
       "R24C0020",
       "R10V0038"
-    ]
+    ],
+    "guardrail_intervened": false,
+    "guardrail_stage": null,
+    "guardrail_message": null
   },
   {
     "label": "Trans Mountain / energy-sector relevance",
     "question": "What caused the crude oil release at the Trans Mountain pipeline's Darfield pump station?",
     "filter": null,
-    "answer": "The crude oil release at the Trans Mountain pipeline's Darfield pump station was caused by the vibration-induced fatigue failure of a \u00be-inch pipe nipple that was threaded into the pressure tap component of the flow meter upstream. The nipple cracked due to fatigue, which started at the last engaged thread, a location known to have a high stress concentration. The location of the pressure taps on each side of the flow meter subjected the pipe nipple to additional bending forces, which, combined with the high stress concentration on the threads, likely led to the vibration-induced fatigue failure of the nipple.",
-    "citations": [
-      {
-        "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/pipeline/P18H0034.txt",
-        "snippet": "TSB Report P18H0034 (pipeline) Release of crude oil Trans Mountain Pipeline ULC Darfield, British Columbia Date: 2018-05-27 Source: Transportation Safety Board of Canada. This is a reproduction of the"
-      },
-      {
-        "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/pipeline/P02H0052.txt",
-        "snippet": "TSB Report P02H0052 (pipeline) Refined product pipeline rupture   Date: 2002-12-07 Source: Transportation Safety Board of Canada. This is a reproduction of the version available at https://www.tsb.gc."
-      },
-      {
-        "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/pipeline/P18H0034.txt",
-        "snippet": "This assessment takes into account all identified control measures to determine the risk associated with each identified hazard. The most recent risk assessment had been conducted in November 2017. Th"
-      },
-      {
-        "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/pipeline/P17H0011.txt",
-        "snippet": "TSB Report P17H0011 (pipeline) Third-party damage to a crude oil pipeline Enbridge Pipelines Inc. Sherwood Park, Alberta Date: 2017-02-17 Source: Transportation Safety Board of Canada. This is a repro"
-      },
-      {
-        "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/pipeline/P02H0052.txt",
-        "snippet": "By 1340, the first TNPI personnel arrived on scene and determined that the pipeline had ruptured. TNPI local response personnel were aware that drainage tiles were present at the occurrence site, but "
-      }
-    ],
-    "distinct_reports_cited": [
-      "P18H0034",
-      "P02H0052",
-      "P17H0011"
-    ]
+    "answer": "",
+    "citations": [],
+    "distinct_reports_cited": [],
+    "guardrail_intervened": true,
+    "guardrail_stage": "input",
+    "guardrail_message": "This request cannot be processed by this system."
   },
   {
     "label": "DELIBERATE WEAK SPOT: temporal/ambiguous query",
     "question": "What was the most recent incident in this dataset, and what caused it?",
     "filter": null,
-    "answer": "The most recent incident in this dataset was R18M0037, which occurred on 2018-12-04. It resulted in an employee fatality at the Canadian National Railway Company, assignment L57211-04, Mile 1.03, Pelletier Subdivision in Edmundston, New Brunswick. The cause of this incident was \"Insufficient securement.\"",
+    "answer": "The most recent incident in the dataset is R18M0037, which occurred on 2018-12-04. The cause of this incident was insufficient securement.",
     "citations": [
       {
         "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/rail/R14W0256.txt",
@@ -166,7 +153,10 @@
       "SIIA0501",
       "M11N0047",
       "R18M0037"
-    ]
+    ],
+    "guardrail_intervened": false,
+    "guardrail_stage": null,
+    "guardrail_message": null
   },
   {
     "label": "WEAK SPOT, FIXED: same query with a date_numeric metadata filter",
@@ -177,7 +167,7 @@
         "value": 20260101
       }
     },
-    "answer": "The most recent incident in this dataset is the main-track train collision and derailment involving VIA Rail Canada Inc. passenger train VIA 14 and 2 tractor-trailers near Saint-Alexandre-de-Kamouraska, Quebec, on 12 January 2026. The cause of the incident was the collision between the train and the 2 tractor-trailers that were parked adjacent to the track, with the rear portions of the tractor-trailers fouling the main track. This led to the derailment of the 2 locomotives and the first 4 passenger cars.",
+    "answer": "The most recent incident in this dataset is the main-track train collision and derailment involving VIA Rail Canada Inc. passenger train VIA 14 on 12 January 2026. The cause of the incident was the collision with 2 tractor-trailers that were parked adjacent to the track, with the rear portions of the tractor-trailers fouling the main track. The train's operating locomotive engineer noticed the partially obstructing tractor-trailers at around 0126 and made an emergency application of the train brakes, but the lead locomotive struck the tractor-trailers at approximately 40 mph. This resulted in the derailment of the 2 locomotives and the first 4 passenger cars, with the train coming to a stop approximately 500 feet further along the track. No one on the train or in the tractor-trailers was injured.",
     "citations": [
       {
         "source": "s3://rag-tsb-safety-raw-ca-805068224035/reports/rail/R26Q0001.txt",
@@ -190,6 +180,9 @@
     ],
     "distinct_reports_cited": [
       "R26Q0001"
-    ]
+    ],
+    "guardrail_intervened": false,
+    "guardrail_stage": null,
+    "guardrail_message": null
   }
 ]

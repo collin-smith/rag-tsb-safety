@@ -42,9 +42,13 @@ OUT_DIR = os.environ.get("EXTRACTION_OUT_DIR", os.path.join(REPO_ROOT, "demo"))
 OUT_JSON = os.path.join(OUT_DIR, "structured_findings.json")
 OUT_CSV = os.path.join(OUT_DIR, "structured_findings.csv")
 
-REGION = "us-east-1"
-KNOWLEDGE_BASE_ID = "LVBYRHRW4C"
-GENERATION_MODEL_ID = "amazon.nova-lite-v1:0"
+REGION = "ca-central-1"
+KNOWLEDGE_BASE_ID = "Z3Q6F4RTPY"
+# ca-central-1 Nova Lite is INFERENCE_PROFILE-only (confirmed 2026-09-15) --
+# see rag_utils.py / demo.py for the same note. This was still the stale
+# pre-migration us-east-1 on-demand ID until 2026-09-17, which would fail
+# against a KB that no longer exists were this script re-run today.
+GENERATION_MODEL_ID = "ca.amazon.nova-lite-v1:0"
 NOVA_LITE_INPUT_RATE = 0.06   # USD per million tokens
 NOVA_LITE_OUTPUT_RATE = 0.24  # USD per million tokens
 

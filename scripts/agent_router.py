@@ -10,7 +10,9 @@ lets IT decide which one a given natural-language question needs:
   then converse(), not Bedrock's retrieve_and_generate convenience API,
   which was found to silently diverge from the KB's own retrieve() results
   on the ca-central-1 KB, see rag_utils.py) -- for "what caused X"
-  questions that plain RAG handles well.
+  questions that plain RAG handles well. Every semantic-tool call also
+  passes through the Phase 6 Guardrail via rag_utils.py's two-call
+  pattern, not just Phase 6's own standalone tests.
 - `aggregate_structured_findings`: exact counts/sums over the exhaustive
   extraction table built by extract_structured_findings.py -- for "how many"
   / "what fraction" questions that RAG cannot answer reliably (the
@@ -50,6 +52,8 @@ GENERATION_MODEL_ARN = "arn:aws:bedrock:ca-central-1:805068224035:inference-prof
 GENERATION_MODEL_ID = "ca.amazon.nova-lite-v1:0"
 NOVA_LITE_INPUT_RATE = 0.06
 NOVA_LITE_OUTPUT_RATE = 0.24
+GUARDRAIL_ID = "ee95ld5r9ckp"
+GUARDRAIL_VERSION = "1"
 
 SYSTEM_PROMPT = """You answer questions about a corpus of Transportation Safety Board of \
 Canada (TSB) investigation reports (rail, pipeline, marine, aviation). You have two tools:
@@ -157,11 +161,16 @@ def run_semantic(bedrock_runtime, agent_runtime, question, mode=None):
     result = verified_retrieve_and_generate(
         agent_runtime, bedrock_runtime, question, KNOWLEDGE_BASE_ID, GENERATION_MODEL_ID,
         metadata_filter=metadata_filter, number_of_results=8,
+        guardrail_id=GUARDRAIL_ID, guardrail_version=GUARDRAIL_VERSION,
     )
+    if result["guardrail_stage"] == "input":
+        return {"grounded": False, "answer": result["guardrail_message"] or
+                "This question was blocked by guardrail policy."}
     if not result["grounded"]:
         return {"grounded": False, "answer": "No supporting evidence found in the corpus for this question."}
     return {"grounded": True, "answer": result["answer"],
-            "distinct_reports_cited": result["distinct_reports_cited"]}
+            "distinct_reports_cited": result["distinct_reports_cited"],
+            "guardrail_intervened": result["guardrail_intervened"]}
 
 
 def execute_tool(name, tool_input, mode_map, findings, bedrock_runtime, agent_runtime):

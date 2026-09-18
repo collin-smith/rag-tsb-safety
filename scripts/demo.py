@@ -22,6 +22,10 @@ converse(), not Bedrock's retrieve_and_generate convenience API) -- see
 rag_utils.py's module docstring for why: that API was found to silently
 diverge from this KB's own retrieve() results on ca-central-1.
 
+Every question below also passes through the Phase 6 Guardrail
+(rag-tsb-safety-guardrail) via the two-call pattern in rag_utils.py --
+not just the isolated ApplyGuardrail tests Phase 6 ran standalone.
+
 Usage:
     .venv/bin/python3 scripts/demo.py
 """
@@ -45,6 +49,8 @@ KNOWLEDGE_BASE_ID = "Z3Q6F4RTPY"
 # not the us-east-1 foundation-model ARN this used to point at.
 GENERATION_MODEL_ID = "ca.amazon.nova-lite-v1:0"
 NUMBER_OF_RESULTS = 5
+GUARDRAIL_ID = "ee95ld5r9ckp"
+GUARDRAIL_VERSION = "1"
 
 QUESTIONS = [
     {
@@ -74,14 +80,19 @@ def run_query(bedrock_runtime, agent_runtime, question_text, metadata_filter=Non
     result = verified_retrieve_and_generate(
         agent_runtime, bedrock_runtime, question_text, KNOWLEDGE_BASE_ID, GENERATION_MODEL_ID,
         metadata_filter=metadata_filter, number_of_results=NUMBER_OF_RESULTS,
+        guardrail_id=GUARDRAIL_ID, guardrail_version=GUARDRAIL_VERSION,
     )
-    return result["answer"], result["citations"]
+    return (result["answer"], result["citations"], result["guardrail_intervened"],
+            result["guardrail_stage"], result["guardrail_message"])
 
 
 def print_and_record(bedrock_runtime, agent_runtime, label, question_text, metadata_filter=None):
     print(f"\n{'=' * 80}\n[{label}]\nQ: {question_text}\n{'-' * 80}")
-    answer, citations = run_query(bedrock_runtime, agent_runtime, question_text, metadata_filter)
+    answer, citations, guardrail_intervened, guardrail_stage, guardrail_message = run_query(
+        bedrock_runtime, agent_runtime, question_text, metadata_filter)
     print(f"A: {answer}\n")
+    if guardrail_intervened:
+        print(f"GUARDRAIL INTERVENED (stage: {guardrail_stage}): {guardrail_message}")
     print(f"Cited sources ({len(citations)} chunks):")
     seen_reports = []
     for c in citations:
@@ -97,6 +108,9 @@ def print_and_record(bedrock_runtime, agent_runtime, label, question_text, metad
         "answer": answer,
         "citations": citations,
         "distinct_reports_cited": seen_reports,
+        "guardrail_intervened": guardrail_intervened,
+        "guardrail_stage": guardrail_stage,
+        "guardrail_message": guardrail_message,
     }
 
 
