@@ -120,72 +120,77 @@ def diagram1():
 
 
 def diagram2():
-    w, h = 1040, 560
+    # Margins widened 2026-09-18 (uniform +40x/+30y shift, canvas grown to
+    # match) -- the previous layout left almost no breathing room on the
+    # right/bottom edges.
+    w, h = 1120, 620
     svg = [svg_header(w, h), category_defs(), arrow_marker()]
     svg.append(f'<rect width="{w}" height="{h}" fill="#ffffff"/>')
 
-    svg.append(rect(30, 240, 150, 80, BLUE, "#666666"))
-    svg.append(text(105, 265, "demo.py", size=12, weight="700", anchor="middle"))
-    svg.append(text(105, 283, "5 real questions +\n1 weak-spot query", size=10, color="#333", anchor="middle"))
+    svg.append(rect(70, 270, 150, 80, BLUE, "#666666"))
+    svg.append(text(145, 295, "demo.py", size=12, weight="700", anchor="middle"))
+    svg.append(text(145, 313, "5 real questions +\n1 weak-spot query", size=10, color="#333", anchor="middle"))
 
-    svg.append(rect(230, 40, 780, 480, "none", CLOUD_NAVY, stroke_width=2))
-    svg.append(text(245, 65, "AWS Cloud (ca-central-1)", size=13, weight="700", color=CLOUD_NAVY))
+    svg.append(rect(270, 70, 780, 480, "none", CLOUD_NAVY, stroke_width=2))
+    svg.append(text(285, 95, "AWS Cloud (ca-central-1)", size=13, weight="700", color=CLOUD_NAVY))
 
-    svg.append(aws_icon(260, 100, 78, 78, "S3 raw zone\n(Phase 1 output, migrated)\n370 reports + metadata", "storage"))
-    svg.append(aws_icon(280, 420, 60, 60, "IAM role\nKB execution", "security"))
-    svg.append(aws_icon(460, 260, 90, 90, "Bedrock Knowledge Base\nZ3Q6F4RTPY\nchunk 1500tok/10% overlap", "ml"))
-    svg.append(aws_icon(470, 100, 70, 70, "Titan Embeddings V2\n(60 req/min quota)", "ml"))
-    svg.append(aws_icon(700, 100, 78, 78, "S3 Vectors\nrag-tsb-safety-vectors\n370 docs, date_numeric", "storage"))
-    svg.append(aws_icon(700, 280, 70, 70, "Amazon Nova Lite\nvia ca.amazon.nova-lite-v1:0\nCA inference profile", "ml"))
+    svg.append(aws_icon(300, 130, 78, 78, "S3 raw zone\n(Phase 1 output, migrated)\n370 reports + metadata", "storage"))
+    svg.append(aws_icon(320, 450, 60, 60, "IAM role\nKB execution", "security"))
+    svg.append(aws_icon(500, 290, 90, 90, "Bedrock Knowledge Base\nZ3Q6F4RTPY\nchunk 1500tok/10% overlap", "ml"))
+    svg.append(aws_icon(510, 130, 70, 70, "Titan Embeddings V2\n(60 req/min quota)", "ml"))
+    svg.append(aws_icon(740, 130, 78, 78, "S3 Vectors\nrag-tsb-safety-vectors\n370 docs, date_numeric", "storage"))
+    svg.append(aws_icon(740, 310, 70, 70, "Amazon Nova Lite\nvia ca.amazon.nova-lite-v1:0\nCA inference profile", "ml"))
 
-    svg.append(line(180, 280, 500, 300, label="retrieve() query + optional metadata filter", lx=340, ly=270))
-    svg.append(line(505, 355, 180, 340, dash="4,3", label="answer + citations (rag_utils.py)", lx=340, ly=365))
-    svg.append(line(340, 178, 500, 135, label="sync: fetch + chunk", lx=420, ly=145))
-    svg.append(line(540, 135, 700, 135, label="embeddings", lx=620, ly=120))
-    svg.append(line(550, 300, 700, 250, label="filtered vector search", lx=650, ly=260))
-    svg.append(line(550, 320, 700, 315, label="chunks -> rag_utils -> converse()", lx=630, ly=345))
-    svg.append(line(310, 420, 480, 350, dash="4,3", label="assumed by", lx=370, ly=400))
+    svg.append(line(220, 310, 540, 330, label="retrieve() query + optional metadata filter", lx=380, ly=300))
+    svg.append(line(545, 385, 220, 370, dash="4,3", label="answer + citations (rag_utils.py)", lx=380, ly=395))
+    svg.append(line(380, 208, 540, 165, label="sync: fetch + chunk", lx=460, ly=175))
+    svg.append(line(580, 165, 740, 165, label="embeddings", lx=660, ly=150))
+    svg.append(line(590, 330, 740, 280, label="filtered vector search", lx=690, ly=290))
+    svg.append(line(590, 350, 740, 345, label="chunks -> rag_utils -> converse()", lx=670, ly=375))
+    svg.append(line(350, 450, 520, 380, dash="4,3", label="assumed by", lx=410, ly=430))
 
     svg.append("</svg>")
     return "\n".join(svg)
 
 
 def diagram3():
-    w, h = 1080, 700
+    # Margins widened 2026-09-18 (uniform +60x/+50y shift, canvas grown to
+    # match), same treatment as diagram2().
+    w, h = 1180, 780
     svg = [svg_header(w, h), category_defs(), arrow_marker()]
     svg.append(f'<rect width="{w}" height="{h}" fill="#ffffff"/>')
 
-    svg.append(rect(20, 280, 120, 65, BLUE, "#666666"))
-    svg.append(text(80, 305, "Dev machine", size=12, weight="700", anchor="middle"))
-    svg.append(text(80, 323, "extract_structured_findings.py\nagent_router.py", size=9, color="#333", anchor="middle"))
+    svg.append(rect(80, 330, 120, 65, BLUE, "#666666"))
+    svg.append(text(140, 355, "Dev machine", size=12, weight="700", anchor="middle"))
+    svg.append(text(140, 373, "extract_structured_findings.py\nagent_router.py", size=9, color="#333", anchor="middle"))
 
-    svg.append(rect(20, 480, 190, 90, NOTE_YELLOW, "#D4A017"))
-    svg.append(text(115, 500, "structured_findings.json/csv", size=11, weight="700", anchor="middle"))
-    svg.append(text(115, 516, "(local file, NOT an AWS resource)\n57 rows: root cause, fatalities,\ndangerous goods, prior rec. status",
+    svg.append(rect(80, 530, 190, 90, NOTE_YELLOW, "#D4A017"))
+    svg.append(text(175, 550, "structured_findings.json/csv", size=11, weight="700", anchor="middle"))
+    svg.append(text(175, 566, "(local file, NOT an AWS resource)\n57 rows: root cause, fatalities,\ndangerous goods, prior rec. status",
                      size=9, color="#444", anchor="middle"))
 
-    svg.append(rect(780, 540, 260, 110, EXTERNAL_GRAY, "#666666", dash="6,4"))
-    svg.append(text(910, 560, "No VPC", size=12, weight="700", anchor="middle"))
-    svg.append(text(910, 578, "All AWS services reached over their\npublic API via boto3 -- no compute\ndeployed inside a VPC boundary.\nWould only apply behind a\nproductionized Lambda/ECS task.",
+    svg.append(rect(840, 590, 260, 110, EXTERNAL_GRAY, "#666666", dash="6,4"))
+    svg.append(text(970, 610, "No VPC", size=12, weight="700", anchor="middle"))
+    svg.append(text(970, 628, "All AWS services reached over their\npublic API via boto3 -- no compute\ndeployed inside a VPC boundary.\nWould only apply behind a\nproductionized Lambda/ECS task.",
                      size=9, color="#444", anchor="middle"))
 
-    svg.append(rect(260, 30, 720, 500, "none", CLOUD_NAVY, stroke_width=2))
-    svg.append(text(275, 55, "AWS Cloud (ca-central-1) -- no VPC", size=13, weight="700", color=CLOUD_NAVY))
+    svg.append(rect(320, 80, 720, 500, "none", CLOUD_NAVY, stroke_width=2))
+    svg.append(text(335, 105, "AWS Cloud (ca-central-1) -- no VPC", size=13, weight="700", color=CLOUD_NAVY))
 
-    svg.append(aws_icon(280, 60, 60, 60, "S3 raw zone\n(reused)", "storage"))
-    svg.append(aws_icon(280, 450, 55, 55, "IAM role\n(reused)", "security"))
-    svg.append(aws_icon(440, 220, 110, 95, "Bedrock Knowledge Base\nZ3Q6F4RTPY\nretrieve() -- not retrieve_and_generate", "ml"))
-    svg.append(aws_icon(640, 60, 60, 60, "S3 Vectors\n(reused)", "storage"))
-    svg.append(aws_icon(640, 210, 90, 80, "Nova Lite\nextraction\n(1 call/report)", "ml"))
-    svg.append(aws_icon(800, 360, 110, 90, "Nova Lite\ntool-use router\n(picks aggregate\nvs. semantic tool)", "ml"))
+    svg.append(aws_icon(340, 110, 60, 60, "S3 raw zone\n(reused)", "storage"))
+    svg.append(aws_icon(340, 500, 55, 55, "IAM role\n(reused)", "security"))
+    svg.append(aws_icon(500, 270, 110, 95, "Bedrock Knowledge Base\nZ3Q6F4RTPY\nretrieve() -- not retrieve_and_generate", "ml"))
+    svg.append(aws_icon(700, 110, 60, 60, "S3 Vectors\n(reused)", "storage"))
+    svg.append(aws_icon(700, 260, 90, 80, "Nova Lite\nextraction\n(1 call/report)", "ml"))
+    svg.append(aws_icon(860, 410, 110, 90, "Nova Lite\ntool-use router\n(picks aggregate\nvs. semantic tool)", "ml"))
 
-    svg.append(line(140, 300, 440, 260, label="report_id filter (loop, 1/report)", lx=270, ly=245))
-    svg.append(line(640, 250, 730, 250, label="all chunks", lx=685, ly=235))
-    svg.append(line(700, 290, 200, 480, dash="4,3", label="57 extracted rows", lx=440, ly=400))
-    svg.append(line(140, 320, 800, 400, label="natural-language question", lx=470, ly=345))
-    svg.append(line(850, 450, 220, 520, dash="4,3", label="tool: aggregate_structured_findings", lx=560, ly=500))
-    svg.append(line(800, 400, 550, 280, label="tool: verified_semantic_query", lx=650, ly=345))
-    svg.append(line(800, 440, 140, 335, dash="4,3", label="final answer / fail-safe fallback", lx=470, ly=395))
+    svg.append(line(200, 350, 500, 310, label="report_id filter (loop, 1/report)", lx=330, ly=295))
+    svg.append(line(700, 300, 790, 300, label="all chunks", lx=745, ly=285))
+    svg.append(line(760, 340, 260, 530, dash="4,3", label="57 extracted rows", lx=500, ly=450))
+    svg.append(line(200, 370, 860, 450, label="natural-language question", lx=530, ly=395))
+    svg.append(line(910, 500, 280, 570, dash="4,3", label="tool: aggregate_structured_findings", lx=620, ly=550))
+    svg.append(line(860, 450, 610, 330, label="tool: verified_semantic_query", lx=710, ly=395))
+    svg.append(line(860, 490, 200, 385, dash="4,3", label="final answer / fail-safe fallback", lx=530, ly=445))
 
     svg.append("</svg>")
     return "\n".join(svg)
